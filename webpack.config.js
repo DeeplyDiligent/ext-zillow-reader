@@ -1,7 +1,7 @@
-const {resolve} = require('path');
+const { resolve } = require('path');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const {CleanWebpackPlugin} = require("clean-webpack-plugin");
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
 const tsRule = {
   test: /\.ts(x?)$/,
@@ -10,14 +10,9 @@ const tsRule = {
 }
 
 const plugins = [
-  new HTMLWebpackPlugin({
-    template: 'src/popup-page/popup.html',
-    filename: 'popup.html',
-    chunks: ['popup'],
-  }),
   new CopyWebpackPlugin({
     patterns: [
-      {from: "public", to: "."}
+      { from: "public", to: "." }
     ],
   }),
   new CleanWebpackPlugin(),
@@ -26,16 +21,30 @@ const plugins = [
 module.exports = {
   mode: "development",
   devtool: 'cheap-module-source-map',
-  entry: {
-    popup: './src/popup-page/popup.tsx',
-    contentscript: './src/contentscript.ts',
-  },
+  entry: resolve(__dirname) + '/src/index.tsx',
   output: {
     filename: '[name].js',
     path: resolve(__dirname, 'dist'),
   },
   module: {
-    rules: [tsRule],
+    rules: [tsRule, { test: /\.css$/, use: ['style-loader', 'css-loader', 'postcss-loader'] }]
   },
-  plugins,
+  resolve: {
+    extensions: ['.js', '.jsx', '.ts', '.tsx'],
+  },
+  plugins
+}
+
+const hello = {
+  "compilerOptions": {
+    "target": "es5", "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true, "module": "esnext", "moduleResolution": "node",
+    "resolveJsonModule": true, "isolatedModules": true, "noEmit": true, "jsx": "react-jsx"
+  }, "include": ["src"]
 }
