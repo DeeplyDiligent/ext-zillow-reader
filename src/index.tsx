@@ -1,22 +1,23 @@
-import React, { useState } from 'react';
-import {FunctionComponent} from 'react';
-import { Component } from 'react';
-import { render } from 'react-dom';
-import { Lead, Leads } from './app/leads/leads';
-import NotesForLead from './app/notes/notesForLead';
+import React from 'react';
+import ReactDOM from 'react-dom/client';
 import './index.css';
-interface IndexProps {
-  
-}
- 
-const Index: FunctionComponent<IndexProps> = () => {
-  const [leadSelected, setLeadSelected] = useState<string | null>(null)
-  const [leads, setLeads] = useState<Lead[]>([])
+import { Provider } from 'react-redux'
+import App from './App';
+import reportWebVitals from './reportWebVitals';
+import { store } from './store'
 
-  return <div className='flex flex-row w-full' style={{minWidth:1500}}>    
-    <Leads setLeadSelected = {setLeadSelected} leads={leads} setLeads={setLeads} />
-    <NotesForLead leadSelected = {leadSelected} leads={leads}  />
-  </div>;
-}
- 
-render(<Index />, document.getElementById("app"));
+const root = ReactDOM.createRoot(
+  document.getElementById('app') as HTMLElement
+);
+root.render(
+  <React.StrictMode>
+    <Provider store={store}>
+    <App />
+    </Provider>
+  </React.StrictMode>
+);
+
+// If you want to start measuring performance in your app, pass a function
+// to log results (for example: reportWebVitals(console.log))
+// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+reportWebVitals();
